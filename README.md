@@ -10,3 +10,7 @@ bun run build
 ## Docs
 - [shadcn/ui](https://ui.shadcn.com/docs/components/accordion)
 > bunx shadcn-ui@latest add
+- [hypercolor -> tailwindcss](https://hypercolor.dev/)
+> Get some color palettes for your tailwindcss project
+- [tailwindcss](https://tailwindcss.com/docs)
+> Tailwindcss documentation
