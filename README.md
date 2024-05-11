@@ -10,6 +10,7 @@ bun run dev
 bun run build
 ```
 `bunx` # Similar to npx but using bun
+
 `bun`  # Similar to npm but using bun
 
 ## Docs
@@ -24,8 +25,10 @@ bun run build
 - https://www.flaticon.com/
 
 ### Freepik
-![](./public/hacker.png =x50)
-![](./public/llm.png =x50)
+<img src="./public/llm.png" width=50> <img src="./public/hacker.png" width=50>
 
 ### photo3idea_studio
-![](./public/ai.png =x50)
+<img src="./public/ai.png" width=50>
+
+### Pixelmeetup
+<img src="./public/duck.png" width=50>
