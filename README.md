@@ -1,3 +1,8 @@
+# How to execute this project
+1. `bun install` # Install all dependencies
+2. `bun run dev` # Run the project in development mode
+3. `bun run build` # Build the project
+
 # Utils
 
 ```
@@ -14,3 +19,13 @@ bun run build
 > Get some color palettes for your tailwindcss project
 - [tailwindcss](https://tailwindcss.com/docs)
 > Tailwindcss documentation
+
+## Credits
+- https://www.flaticon.com/
+
+### Freepik
+![](./public/hacker.png =x50)
+![](./public/llm.png =x50)
+
+### photo3idea_studio
+![](./public/ai.png =x50)
