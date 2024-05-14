@@ -1,3 +1,6 @@
+# Prerequisites
+- https://bun.sh/
+
 # How to execute this project
 1. `bun install` # Install all dependencies
 2. `bun run dev` # Run the project in development mode
