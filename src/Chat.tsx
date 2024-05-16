@@ -53,6 +53,14 @@ export function Chat() {
     }
 
     setNewMessage('');
+
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault(); // Prevent the default action to avoid a new line in case of a textarea or form submission in case of single line input
+      handleSendMessage();
+    }
   };
 
   return (
@@ -80,7 +88,11 @@ export function Chat() {
         ))}
       </CardContent>
       <CardFooter className="flex space-x-2">
-        <Input placeholder="Type a message" value={newMessage} onChange={(e) => setNewMessage(e.target.value)} />
+        <Input placeholder="Type a message"
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+          onKeyPress={handleKeyPress}
+        />
         <Button onClick={handleSendMessage} type="submit">Send</Button>
       </CardFooter>
     </Card>
