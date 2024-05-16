@@ -3,19 +3,12 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import ollama from 'ollama/browser';  // Make sure to use the browser version if on the client-side
+import ollama from 'ollama/browser';  // Make sure to use the correct import
 
 export function Chat() {
-  const [messages, setMessages] = useState([
-    {
-      sender: 'AI',
-      message: "Hello duck, how are you?",
-      timestamp: new Date().toLocaleTimeString(),
-      avatar: '/public/ai.jpg',
-      fallback: 'AI'
-    }
-  ]);
+  const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
+
   const handleSendMessage = async () => {
     if (newMessage.trim()) {
       const userMessage = {
@@ -25,26 +18,36 @@ export function Chat() {
         avatar: '/public/human.png',
         fallback: 'YOU'
       };
-      setMessages([...messages, userMessage]);
+      setMessages(prevMessages => [...prevMessages, userMessage]);
 
       const message = { role: 'user', content: newMessage };
+      let fullAIResponse = "";  // To accumulate full AI response
       try {
         const response = await ollama.chat({
-          model: 'phi3',  // Make sure to replace 'phi3' with the correct model name if different
+          model: 'phi3',
           messages: [message],
           stream: true
         });
 
         for await (const part of response) {
           if (part.message && part.message.content) {
-            const aiMessage = {
-              sender: 'AI',
-              message: part.message.content,
-              timestamp: new Date().toLocaleTimeString(),
-              avatar: '/public/ai.jpg',
-              fallback: 'AI'
-            };
-            setMessages(prevMessages => [...prevMessages, aiMessage]);
+            fullAIResponse += part.message.content + " ";
+            // Update only the last AI message part without re-rendering all messages
+            setMessages(prevMessages => {
+              const newMessages = [...prevMessages];
+              if (!newMessages[newMessages.length - 1] || newMessages[newMessages.length - 1].sender !== 'AI') {
+                newMessages.push({
+                  sender: 'AI',
+                  message: fullAIResponse,
+                  timestamp: new Date().toLocaleTimeString(),
+                  avatar: '/public/ai.jpg',
+                  fallback: 'AI'
+                });
+              } else {
+                newMessages[newMessages.length - 1].message = fullAIResponse;
+              }
+              return newMessages;
+            });
           }
         }
       } catch (error) {
