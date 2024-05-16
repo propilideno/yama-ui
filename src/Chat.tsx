@@ -30,7 +30,7 @@ export function Chat() {
       let aiResponse = "";
       for await (const part of response) {
         if (part.message && part.message.content) {
-          aiResponse += part.message.content + " ";
+          aiResponse += part.message.content;
           // Update the last AI message or add a new one if it's the first part
           setMessages(prevMessages => {
             const lastMessage = prevMessages[prevMessages.length - 1];
