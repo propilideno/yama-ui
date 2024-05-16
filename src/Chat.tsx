@@ -3,59 +3,56 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import ollama from 'ollama/browser';  // Make sure to use the correct import
+import ollama from 'ollama/browser';  // Ensuring correct import
 
 export function Chat() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
 
+  const appendMessage = (sender, message, avatar, fallback) => {
+    const timestamp = new Date().toLocaleTimeString();
+    setMessages(prevMessages => [...prevMessages, { sender, message, timestamp, avatar, fallback }]);
+  };
+
   const handleSendMessage = async () => {
-    if (newMessage.trim()) {
-      const userMessage = {
-        sender: 'You',
-        message: newMessage,
-        timestamp: new Date().toLocaleTimeString(),
-        avatar: '/public/human.png',
-        fallback: 'YOU'
-      };
-      setMessages(prevMessages => [...prevMessages, userMessage]);
+    if (!newMessage.trim()) return;
 
-      const message = { role: 'user', content: newMessage };
-      let fullAIResponse = "";  // To accumulate full AI response
-      try {
-        const response = await ollama.chat({
-          model: 'phi3',
-          messages: [message],
-          stream: true
-        });
+    appendMessage('You', newMessage, '/public/human.png', 'YOU');
+    
+    const message = { role: 'user', content: newMessage };
+    try {
+      const response = await ollama.chat({
+        model: 'phi3',
+        messages: [message],
+        stream: true
+      });
 
-        for await (const part of response) {
-          if (part.message && part.message.content) {
-            fullAIResponse += part.message.content + " ";
-            // Update only the last AI message part without re-rendering all messages
-            setMessages(prevMessages => {
-              const newMessages = [...prevMessages];
-              if (!newMessages[newMessages.length - 1] || newMessages[newMessages.length - 1].sender !== 'AI') {
-                newMessages.push({
-                  sender: 'AI',
-                  message: fullAIResponse,
-                  timestamp: new Date().toLocaleTimeString(),
-                  avatar: '/public/ai.jpg',
-                  fallback: 'AI'
-                });
-              } else {
-                newMessages[newMessages.length - 1].message = fullAIResponse;
-              }
-              return newMessages;
-            });
-          }
+      let aiResponse = "";
+      for await (const part of response) {
+        if (part.message && part.message.content) {
+          aiResponse += part.message.content + " ";
+          // Update the last AI message or add a new one if it's the first part
+          setMessages(prevMessages => {
+            const lastMessage = prevMessages[prevMessages.length - 1];
+            if (lastMessage && lastMessage.sender === 'AI') {
+              return prevMessages.map((msg, idx) => idx === prevMessages.length - 1 ? { ...msg, message: aiResponse } : msg);
+            } else {
+              return [...prevMessages, {
+                sender: 'AI', 
+                message: aiResponse, 
+                timestamp: new Date().toLocaleTimeString(), 
+                avatar: '/public/ai.jpg', 
+                fallback: 'AI' 
+              }];
+            }
+          });
         }
-      } catch (error) {
-        console.error("Error handling streaming response:", error);
       }
-
-      setNewMessage('');
+    } catch (error) {
+      console.error("Error handling streaming response:", error);
     }
+
+    setNewMessage('');
   };
 
   return (
