@@ -1,38 +1,56 @@
 import React, { useState } from 'react';
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import ollama from 'ollama/browser';  // Make sure to use the browser version if on the client-side
 
 export function Chat() {
   const [messages, setMessages] = useState([
     {
       sender: 'AI',
-      message: "I'm a large language model i don't have feelings, but if i was a human i should answer 'I am fine, and you?'",
-      timestamp: '19:42',
+      message: "Hello duck, how are you?",
+      timestamp: new Date().toLocaleTimeString(),
       avatar: '/public/ai.jpg',
       fallback: 'AI'
-    },
-    {
-      sender: 'You',
-      message: 'Hello, how are you?',
-      timestamp: '19:41',
-      avatar: '/public/human.png',
-      fallback: 'YOU'
     }
   ]);
   const [newMessage, setNewMessage] = useState('');
-
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (newMessage.trim()) {
-      const newMsg = {
+      const userMessage = {
         sender: 'You',
         message: newMessage,
         timestamp: new Date().toLocaleTimeString(),
         avatar: '/public/human.png',
         fallback: 'YOU'
       };
-      setMessages([...messages, newMsg]);
+      setMessages([...messages, userMessage]);
+
+      const message = { role: 'user', content: newMessage };
+      try {
+        const response = await ollama.chat({
+          model: 'phi3',  // Make sure to replace 'phi3' with the correct model name if different
+          messages: [message],
+          stream: true
+        });
+
+        for await (const part of response) {
+          if (part.message && part.message.content) {
+            const aiMessage = {
+              sender: 'AI',
+              message: part.message.content,
+              timestamp: new Date().toLocaleTimeString(),
+              avatar: '/public/ai.jpg',
+              fallback: 'AI'
+            };
+            setMessages(prevMessages => [...prevMessages, aiMessage]);
+          }
+        }
+      } catch (error) {
+        console.error("Error handling streaming response:", error);
+      }
+
       setNewMessage('');
     }
   };
