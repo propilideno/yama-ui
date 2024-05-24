@@ -16,10 +16,15 @@ steps:
     checkLatest: true
   displayName: 'Install Node.js'
 
-- script: echo Hello, world! 
-  displayName: 'Run a one-line script' 
+- task: Npm@1
+  displayName: setup bun
+  inputs:
+    command: 'custom'
+    customCommand: 'install -g bun'
+    verbose: true
 
-- script: |
-    npm install
-    npm run dev
-  displayName: 'Install, build and run '
+- bash: bun install
+  displayName: 'Bun install'
+
+- bash: bun run build
+  displayName: 'Bun build'
