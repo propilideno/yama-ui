@@ -3,7 +3,8 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
-trigger: none
+trigger:
+  - main
 
 pool:
   name: local
@@ -15,8 +16,11 @@ steps:
     checkLatest: true
   displayName: 'Install Node.js'
 
+- script: echo Hello, world! 
+  displayName: 'Run a one-line script' 
+
 - script: |
-    bun install
-    bun run build
-    bun run dev
-  displayName: 'Bun install, build and run'
+    npm install
+    npm run build
+    npm run dev
+  displayName: 'Install, build and run '
