@@ -21,6 +21,5 @@ steps:
 
 - script: |
     npm install
-    npm run build
     npm run dev
   displayName: 'Install, build and run '
