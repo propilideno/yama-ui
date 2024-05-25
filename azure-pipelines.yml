@@ -43,16 +43,19 @@ stages:
         repository: $(REPOSITORY)
         dockerfile: 'Dockerfile'
         tags: |
-          $(Build.SourceBrachName)
+          $(Build.SourceBranchName)
       displayName: Build and Push
 
     - task: ArchiveFiles@2
       inputs:
         rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+        archiveType: tar
+        tarCompression: bz2
         includeRootFolder: false
+        verbose: true
 
-    - task: PublishPipelineArtifact@0
-      inputs:
-        targetPath: '$(System.ArtifactsDirectory)'
-        artifactName: drop
-      displayName: "Publish Dockerfile"
+    # - task: PublishPipelineArtifact@0
+    #   inputs:
+    #     targetPath: '$(System.ArtifactsDirectory)'
+    #     artifactName: drop
+    #   displayName: "Publish Dockerfile"
