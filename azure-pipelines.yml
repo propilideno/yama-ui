@@ -45,10 +45,11 @@ stages:
         includeRootFolder: false
         verbose: false
 
-    - task: PublishBuildArtifacts@1
-      displayName: 'Publish Artifact: drop'
+    - task: PublishPipelineArtifact@0
       inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)/v$(Build.SourceBranchName)-$(Build.BuildId).tar.bz2'
+        targetPath: '$(Build.ArtifactStagingDirectory)'
+        artifactName: drop
+      displayName: "Publish the artifact"
 
     - task: Docker@2
       inputs:
