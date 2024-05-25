@@ -41,7 +41,7 @@ stages:
         rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
         archiveType: 'tar'
         tarCompression: 'bz2'
-        archiveFile: 'v$(Build.SourceBranchName)-$(Build.BuildId).tar.bz2'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/v$(Build.SourceBranchName)-$(Build.BuildId).tar.bz2'
         includeRootFolder: false
         verbose: false
 
