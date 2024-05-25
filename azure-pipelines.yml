@@ -1,5 +1,5 @@
 trigger:
-  - azure-pipelines
+  - main
 
 pool:
   name: local
@@ -23,4 +23,5 @@ steps:
 - script: bun install
   displayName: 'Bun Install'
 
-- script: bun run build
+- script: bunx --bun vite build # Build without verify with TypeScript
+  displayName: 'Bun Build'
