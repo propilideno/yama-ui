@@ -3,7 +3,7 @@ trigger:
 
 variables:
   system.debug: true
-  CONTAINER_REGISTRY: propilideno.azurecr.io
+  CONTAINER_REGISTRY: acr
   REPOSITORY: yama-ui
 
 stages:
