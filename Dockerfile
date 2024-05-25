@@ -7,6 +7,7 @@ WORKDIR /app
 COPY . .
 
 # Install the dependencies
+RUN bun install
 ENV PORT 3000
 
 # Expose the port your app runs on

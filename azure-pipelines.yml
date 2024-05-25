@@ -60,6 +60,6 @@ stages:
 
     - task: PublishPipelineArtifact@0
       inputs:
-        targetPath: '$(System.ArtifactsDirectory)'
+        targetPath: '$(System.ArtifactStagingDirectory)'
         artifactName: drop
       displayName: "Publish the artifact"
