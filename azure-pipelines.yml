@@ -1,7 +1,7 @@
 trigger:
   - releases/*
 
-# pr: none
+pr: none
 
 variables:
   system.debug: true
@@ -19,7 +19,7 @@ stages:
       inputs:
         versionSpec: '14.x'
       displayName: 'Install Node.js'
-    #
+
     # - script: |
     #     npm install -g bun
     #     bun install
@@ -43,7 +43,7 @@ stages:
         rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
         archiveType: 'tar'
         tarCompression: 'bz2'
-        archiveFile: '$(Build.ArtifactDirectory)/$(SourceBranch)-$(Build.BuildId).tar.bz2'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.SourceBranch)-$(Build.BuildId).tar.bz2'
         includeRootFolder: false
         verbose: false
 
@@ -58,9 +58,8 @@ stages:
           $(Build.SourceBranchName)
       displayName: Build and Push
 
-
     - task: PublishPipelineArtifact@0
       inputs:
-        targetPath: '$(System.ArtifactDirectory)'
+        targetPath: '$(Build.ArtifactStagingDirectory)'
         artifactName: drop
       displayName: "Publish the artifact"
