@@ -1,6 +1,8 @@
 trigger:
   - releases/*
 
+pr: none
+
 variables:
   system.debug: true
   CONTAINER_REGISTRY: acr
