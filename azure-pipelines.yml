@@ -1,7 +1,7 @@
 trigger:
   - releases/*
 
-pr: none
+# pr: none
 
 variables:
   system.debug: true
