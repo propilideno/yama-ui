@@ -6,9 +6,6 @@ variables:
   CONTAINER_REGISTRY: propilideno.azurecr.io
   REPOSITORY: yama-ui
 
-pool:
-  name: local
-
 stages:
 - stage: Build
   jobs:
