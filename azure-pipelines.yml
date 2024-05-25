@@ -1,27 +1,43 @@
 trigger:
   - main
 
-pool:
-  name: local
-
 variables:
   system.debug: 'true'
 
-steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '14.x'
-  displayName: 'Install Node.js'
+stages:
+- stage: build
+  displayName: Build 
+  jobs:
+  - job: build
+    displayName: Build 
+    pool:
+      name: local
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '14.x'
+      displayName: 'Install Node.js'
 
-- bash: |
-    ls -l
-    pwd
+    - bash: |
+        ls -l
+        pwd
+        echo "$(System.DefaultWorkingDirectory)"
+        echo "$(System.ArtifactsDirectory)"
+      displayName: Debug Info
 
-- script: npm install -g bun
-  displayName: 'Install Bun'
+    - script: npm install -g bun
+      displayName: 'Install Bun'
 
-- script: bun install
-  displayName: 'Bun Install'
+    - script: |
+        bun install
+        bunx --bun vite build # Build without verify with TypeScript
+      displayName: 'Install Dependencies and Build Project'
 
-- script: bunx --bun vite build # Build without verify with TypeScript
-  displayName: 'Bun Build'
+    - task: ArchiveFiles@2
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+        includeRootFolder: false
+
+    - task: PublishPipelineArtifact@0
+      inputs:
+        targetPath: '$(System.ArtifactsDirectory)'
