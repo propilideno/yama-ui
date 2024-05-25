@@ -1,7 +1,7 @@
 trigger:
   - releases/*
 
-pr: none
+# pr: none
 
 variables:
   system.debug: true
@@ -11,21 +11,20 @@ variables:
 stages:
 - stage: Build
   jobs:
-  - job: ContinuousIntegration
+  - job: Build
     pool:
       name: local
     steps:
-    - task: NodeTool@0
-      inputs:
-        versionSpec: '14.x'
-      displayName: 'Install Node.js'
-
+    # - task: NodeTool@0
+    #   inputs:
+    #     versionSpec: '14.x'
+    #   displayName: 'Install Node.js'
+    # 
     # - script: |
     #     npm install -g bun
     #     bun install
     #     bunx --bun vite build # Build without verify with TypeScript
     #   displayName: 'Install Dependencies and Build Project'
-
     - bash: |
         ls -l
         pwd
@@ -33,19 +32,23 @@ stages:
         echo "$(System.ArtifactsDirectory)"
         echo "$(Build.SourceBranch)"
         echo "$(Build.SourceBranchName)"
-      displayName: Debug Info
-
-    - script: env
-      displayName: Environment variables
+        echo "== Environment Variables =="
+        env
+      displayName: Debug Information
 
     - task: ArchiveFiles@2
       inputs:
         rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
         archiveType: 'tar'
         tarCompression: 'bz2'
-        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.SourceBranch)-$(Build.BuildId).tar.bz2'
+        archiveFile: 'v$(Build.SourceBranchName)-$(Build.BuildId).tar.bz2'
         includeRootFolder: false
         verbose: false
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact: drop'
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)/v$(Build.SourceBranchName)-$(Build.BuildId).tar.bz2'
 
     - task: Docker@2
       inputs:
@@ -56,10 +59,4 @@ stages:
         tags: |
           latest
           $(Build.SourceBranchName)
-      displayName: Build and Push
-
-    - task: PublishPipelineArtifact@0
-      inputs:
-        targetPath: '$(Build.ArtifactStagingDirectory)'
-        artifactName: drop
-      displayName: "Publish the artifact"
+      displayName: 'Build and Push'
