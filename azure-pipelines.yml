@@ -41,10 +41,11 @@ stages:
     - task: ArchiveFiles@2
       inputs:
         rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
-        archiveType: tar
-        tarCompression: bz2
+        archiveType: 'tar'
+        tarCompression: 'bz2'
+        archiveFile: '$(Build.ArtifactDirectory)/$(SourceBranch)-$(Build.BuildId).tar.bz2'
         includeRootFolder: false
-        verbose: true
+        verbose: false
 
     - task: Docker@2
       inputs:
@@ -60,6 +61,6 @@ stages:
 
     - task: PublishPipelineArtifact@0
       inputs:
-        targetPath: '$(System.ArtifactStagingDirectory)'
+        targetPath: '$(System.ArtifactDirectory)'
         artifactName: drop
       displayName: "Publish the artifact"
