@@ -5,6 +5,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import ollama from 'ollama/browser';  // Ensuring correct import
 
+const db_credentials = process.env.YamaDBConnection ?? 'NoValueProvided';
 export function Chat() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
@@ -18,7 +19,7 @@ export function Chat() {
     if (!newMessage.trim()) return;
 
     appendMessage('You', newMessage, '/public/human.png', 'YOU');
-    
+
     const message = { role: 'user', content: newMessage };
     try {
       const response = await ollama.chat({
@@ -67,7 +68,7 @@ export function Chat() {
     <Card className="w-[400px] h-[700px] mx-auto grid grid-rows-[min-content_1fr_min-content]">
       <CardHeader>
         <CardTitle>Yama Chat</CardTitle>
-        <CardDescription>You can interact with your LLM models here</CardDescription>
+        <CardDescription>You can interact with your LLM models here, {db_credentials} </CardDescription>
         <p>History</p>
       </CardHeader>
       <CardContent className="space-y-4 overflow-auto">

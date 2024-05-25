@@ -1,0 +1,63 @@
+trigger:
+  - releases/*
+
+# pr: none
+
+variables:
+  system.debug: true
+  CONTAINER_REGISTRY: acr
+  REPOSITORY: yama-ui
+
+stages:
+- stage: Build
+  jobs:
+  - job: Build
+    pool:
+      name: local
+    steps:
+    # - task: NodeTool@0
+    #   inputs:
+    #     versionSpec: '14.x'
+    #   displayName: 'Install Node.js'
+    # 
+    # - script: |
+    #     npm install -g bun
+    #     bun install
+    #     bunx --bun vite build # Build without verify with TypeScript
+    #   displayName: 'Install Dependencies and Build Project'
+    - bash: |
+        ls -l
+        pwd
+        echo "$(System.DefaultWorkingDirectory)"
+        echo "$(System.ArtifactsDirectory)"
+        echo "$(Build.SourceBranch)"
+        echo "$(Build.SourceBranchName)"
+        echo "== Environment Variables =="
+        env
+      displayName: Debug Information
+
+    - task: ArchiveFiles@2
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+        archiveType: 'tar'
+        tarCompression: 'bz2'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/v$(Build.SourceBranchName)-$(Build.BuildId).tar.bz2'
+        includeRootFolder: false
+        verbose: false
+
+    - task: PublishPipelineArtifact@0
+      inputs:
+        targetPath: '$(Build.ArtifactStagingDirectory)'
+        artifactName: drop
+      displayName: "Publish the artifact"
+
+    - task: Docker@2
+      inputs:
+        command: buildAndPush
+        containerRegistry: $(CONTAINER_REGISTRY)
+        repository: $(REPOSITORY)
+        dockerfile: 'Dockerfile'
+        tags: |
+          latest
+          $(Build.SourceBranchName)
+      displayName: 'Build and Push'
