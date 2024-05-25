@@ -9,7 +9,7 @@ variables:
 stages:
 - stage: Build
   jobs:
-  - job: 'localagent'
+  - job: ContinuousIntegration
     pool:
       name: local
     steps:
