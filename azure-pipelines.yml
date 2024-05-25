@@ -9,7 +9,7 @@ variables:
 stages:
 - stage: Build
   jobs:
-  - job: Run on local agent
+  - job: 'localagent'
     pool:
       name: local
     steps:
@@ -36,23 +36,23 @@ stages:
     - script: env
       displayName: Environment variables
 
-    # - task: Docker@2
-    #   inputs:
-    #     command: buildAndPush
-    #     containerRegistry: $(CONTAINER_REGISTRY)
-    #     repository: $(REPOSITORY)
-    #     dockerfile: 'Dockerfile'
-    #     tags: |
-    #       $(Build.SourceBrachName)
-    #   displayName: Build and Push
-    #
-    # - task: ArchiveFiles@2
-    #   inputs:
-    #     rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
-    #     includeRootFolder: false
-    #
-    # - task: PublishPipelineArtifact@0
-    #   inputs:
-    #     targetPath: '$(System.ArtifactsDirectory)'
-    #     artifactName: drop
-    #   displayName: "Publish Dockerfile"
+    - task: Docker@2
+      inputs:
+        command: buildAndPush
+        containerRegistry: $(CONTAINER_REGISTRY)
+        repository: $(REPOSITORY)
+        dockerfile: 'Dockerfile'
+        tags: |
+          $(Build.SourceBrachName)
+      displayName: Build and Push
+
+    - task: ArchiveFiles@2
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+        includeRootFolder: false
+
+    - task: PublishPipelineArtifact@0
+      inputs:
+        targetPath: '$(System.ArtifactsDirectory)'
+        artifactName: drop
+      displayName: "Publish Dockerfile"
