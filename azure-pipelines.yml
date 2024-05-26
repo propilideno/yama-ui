@@ -60,4 +60,4 @@ stages:
         tags: |
           latest
           $(Build.SourceBranchName)
-     displayName: 'Build and Push'
+      displayName: 'Build and Push'
