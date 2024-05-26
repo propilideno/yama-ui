@@ -6,7 +6,7 @@ trigger:
 variables:
   system.debug: true
   CONTAINER_REGISTRY_CONNECTION: hub.propilideno
-  REPOSITORY: yama-ui
+  REPOSITORY: propilideno/yama-ui
 
 stages:
 - stage: Build
