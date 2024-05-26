@@ -5,7 +5,7 @@ trigger:
 
 variables:
   system.debug: true
-  CONTAINER_REGISTRY: acr
+  CONTAINER_REGISTRY_CONNECTION: hub.propilideno
   REPOSITORY: yama-ui
 
 stages:
@@ -54,10 +54,10 @@ stages:
     - task: Docker@2
       inputs:
         command: buildAndPush
-        containerRegistry: $(CONTAINER_REGISTRY)
+        containerRegistry: $(CONTAINER_REGISTRY_CONNECTION)
         repository: $(REPOSITORY)
         dockerfile: 'Dockerfile'
         tags: |
           latest
           $(Build.SourceBranchName)
-      displayName: 'Build and Push'
+     displayName: 'Build and Push'
