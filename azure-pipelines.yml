@@ -1,5 +1,5 @@
 trigger:
-  - releases/*
+  - release/*
 
 # pr: none
 
