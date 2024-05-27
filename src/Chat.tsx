@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
@@ -7,7 +7,7 @@ import ollama from 'ollama/browser';  // Ensuring correct import
 
 const db_credentials = process.env.YamaDBConnection ?? 'NoValueProvided';
 export function Chat() {
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState<any[]>([]);
   const [newMessage, setNewMessage] = useState('');
 
   const appendMessage = (sender, message, avatar, fallback) => {
