@@ -45,12 +45,6 @@ stages:
         includeRootFolder: false
         verbose: false
 
-    - task: PublishPipelineArtifact@0
-      inputs:
-        targetPath: '$(Build.ArtifactStagingDirectory)'
-        artifactName: drop
-      displayName: "Publish the artifact"
-
     - task: Docker@2
       inputs:
         command: buildAndPush
@@ -61,3 +55,9 @@ stages:
           latest
           $(Build.SourceBranchName)
       displayName: 'Build and Push'
+
+    - task: PublishPipelineArtifact@0
+      inputs:
+        targetPath: '$(Build.ArtifactStagingDirectory)'
+        artifactName: drop
+      displayName: "Publish the artifact"
