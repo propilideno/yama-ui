@@ -1,7 +1,7 @@
 trigger:
   - release/*
 
-# pr: none
+pr: none # Stop trigering CI/CD every pull request
 
 variables:
   system.debug: true
