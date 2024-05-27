@@ -92,7 +92,7 @@ export function Chat() {
         <Input placeholder="Type a message"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
-          onKeyPress={handleKeyPress}
+          onKeyDown={handleKeyPress}
         />
         <Button onClick={handleSendMessage} type="submit">Send</Button>
       </CardFooter>
