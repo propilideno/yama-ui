@@ -10,7 +10,7 @@ export function Chat() {
   const [messages, setMessages] = useState<any[]>([]);
   const [newMessage, setNewMessage] = useState('');
 
-  const appendMessage = (sender, message, avatar, fallback) => {
+  const appendMessage = (sender: string, message: string, avatar: any, fallback: any) => {
     const timestamp = new Date().toLocaleTimeString();
     setMessages(prevMessages => [...prevMessages, { sender, message, timestamp, avatar, fallback }]);
   };
@@ -57,7 +57,7 @@ export function Chat() {
 
   };
 
-  const handleKeyPress = (event) => {
+  const handleKeyPress = (event: any) => {
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault(); // Prevent the default action to avoid a new line in case of a textarea or form submission in case of single line input
       handleSendMessage();
