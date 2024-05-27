@@ -50,7 +50,20 @@ export function Chat() {
         }
       }
     } catch (error) {
-      console.error("Error handling streaming response:", error);
+      // console.error("Error handling streaming response:", error);
+      const errorMessage = "Sorry, we couldn't establish a connection with api server, please check if ollama is running on the same network as mine. You can check it by openning your terminal and typing `ss -tupln | grep 11434`. Also, you can type `ollama serve`.";
+      let aiMessage = '';
+      for (const word of errorMessage.split(' ')) {
+        aiMessage += word + ' ';
+        setMessages((prevMessages) =>
+          prevMessages.map((msg, index) =>
+            index === prevMessages.length - 1
+              ? { ...msg, content: aiMessage.trim() }
+              : msg
+          )
+        );
+        await new Promise((resolve) => setTimeout(resolve, 250));
+      }
     }
 
     setNewMessage('');
