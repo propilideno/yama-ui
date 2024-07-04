@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { screen, render } from '@testing-library/react';
 import { Chat } from '../src/Chat';
 
 test('renders chat component', () => {
@@ -31,3 +31,17 @@ test('dom test', () => {
 //  const sendButtonElement = getByText(/Send/i);
 //  expect(sendButtonElement).toBeInTheDocument();
 //});
+//
+test('renders chat component with static content', () => {
+  // Render the Chat component
+  render(<Chat />);
+
+  // Check if the title "Yama Chat" is rendered
+  const titleElement = screen.getByText(/Yama Chat/i);
+  expect(titleElement).toBeInTheDocument();
+
+  // Debugger statement
+  debugger;
+
+  // Assertions continue...
+});;
