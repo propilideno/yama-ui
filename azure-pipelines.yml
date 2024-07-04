@@ -13,7 +13,7 @@ stages:
   jobs:
   - job: Build
     pool:
-      name: local
+      vmImage: ubuntu-latest
     steps:
     # - task: NodeTool@0
     #   inputs:
