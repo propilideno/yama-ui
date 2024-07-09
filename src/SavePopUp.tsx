@@ -22,18 +22,25 @@ export function SavePopUp({ conversationHistory }: { conversationHistory: any[] 
 
   const saveConversation = async () => {
     setIsSaving(true);
-    console.log("Save button clicked");
 
     try {
-      console.log("Sending POST request to backend");
-      const response = await axios.post(backendEndpoint, {
-        name: conversationName,
-        conversationHistory,
+      const response = await fetch(backendEndpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: conversationName,
+          conversationHistory,
+        }),
       });
 
-      console.log('Conversation saved successfully:', response.data);
+      if (!response.ok) {
+        throw new Error("Failed to save conversation");
+      }
+      console.log("Conversation saved successfully");
     } catch (error) {
-      console.error('Error saving conversation:', error);
+      console.error("Error saving conversation:", error);
     } finally {
       setIsSaving(false);
     }

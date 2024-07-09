@@ -75,14 +75,16 @@ export function Chat() {
   };
 
   const handleConversationSelect = (conversation: any) => {
-    setMessages(JSON.parse(conversation.conversationHistory));
+    try {
+      setMessages(conversation.conversationHistory);
+    } catch (error) {
+      console.error("Error setting conversation history:", error);
+    }
   };
 
   return (
     <div className="flex">
-      <div className="w-[300px] p-4">
-            <ConversationList onConversationSelect={handleConversationSelect} />
-      </div>
+      <ConversationList onConversationSelect={handleConversationSelect} />
       <Card className="w-[400px] h-[700px] mx-auto grid grid-rows-[min-content_1fr_min-content]">
         <CardHeader>
           <CardTitle>Yama Chat</CardTitle>

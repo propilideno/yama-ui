@@ -25,9 +25,11 @@ export function ConversationList({ onConversationSelect }: { onConversationSelec
   }, []);
 
   return (
-    <div className="space-y-4">
+    <div>
+      <div className="font-bold bg-slate-200 text-center rounded-full mb-3"> History </div>
+      <div className="w-[300px] h-[665px] p-2 overflow-auto"> {/* Ensure max height and overflow */}
       {conversations.map((conversation) => (
-        <Card key={conversation._id} className="cursor-pointer" onClick={() => onConversationSelect(conversation)}>
+        <Card key={conversation._id} className="cursor-pointer mb-2" onClick={() => onConversationSelect(conversation)}>
           <CardHeader>
             <CardTitle>{conversation.name}</CardTitle>
           </CardHeader>
@@ -36,6 +38,7 @@ export function ConversationList({ onConversationSelect }: { onConversationSelec
           </CardContent>
         </Card>
       ))}
+      </div>
     </div>
   );
 }
