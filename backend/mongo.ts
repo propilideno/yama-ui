@@ -32,6 +32,16 @@ const Conversation = mongoose.model('yama-history', ConversationSchema);
 app.get('/', (req, res) => {
   res.send('Backend server is running');
 });
+
+app.get('/history', async (req, res) => {
+  try {
+    const conversations = await Conversation.find({});
+    res.status(200).json(conversations);
+  } catch (error) {
+    console.error('Error fetching conversations:', error);
+    res.status(500).json({ error: 'Failed to fetch conversations' });
+  }
+});
  
 app.post('/', async (req, res) => {
   console.log(req.body)

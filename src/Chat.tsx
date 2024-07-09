@@ -6,6 +6,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import ollama from 'ollama/browser';
 import { SavePopUp } from "@/SavePopUp";  // Import SavePopUp component
+import { ConversationList } from "@/ConversationList";
 
 const db_credentials = process.env.YamaDBConnection ?? 'NoValueProvided';
 
@@ -73,40 +74,49 @@ export function Chat() {
     }
   };
 
+  const handleConversationSelect = (conversation: any) => {
+    setMessages(JSON.parse(conversation.conversationHistory));
+  };
+
   return (
-    <Card className="w-[400px] h-[700px] mx-auto grid grid-rows-[min-content_1fr_min-content]">
-      <CardHeader>
-        <CardTitle>Yama Chat</CardTitle>
-        <CardDescription>You can interact with your LLM models here, {db_credentials} </CardDescription>
-        <p>History</p>
-      </CardHeader>
-      <CardContent className="space-y-4 overflow-auto">
-        {messages.map((msg, index) => (
-          <div key={index}>
-            <div className="flex space-x-2 font-semibold">
-              <Avatar>
-                <AvatarImage src={msg.avatar} />
-                <AvatarFallback>{msg.fallback}</AvatarFallback>
-              </Avatar>
-              <div className="flex-none">
-                <p>{msg.sender}</p>
-                <p className="text-sm">{msg.timestamp}</p>
+    <div className="flex">
+      <div className="w-[300px] p-4">
+            <ConversationList onConversationSelect={handleConversationSelect} />
+      </div>
+      <Card className="w-[400px] h-[700px] mx-auto grid grid-rows-[min-content_1fr_min-content]">
+        <CardHeader>
+          <CardTitle>Yama Chat</CardTitle>
+          <CardDescription>You can interact with your LLM models here, {db_credentials} </CardDescription>
+          <p>History</p>
+        </CardHeader>
+        <CardContent className="space-y-4 overflow-auto">
+          {messages.map((msg, index) => (
+            <div key={index}>
+              <div className="flex space-x-2 font-semibold">
+                <Avatar>
+                  <AvatarImage src={msg.avatar} />
+                  <AvatarFallback>{msg.fallback}</AvatarFallback>
+                </Avatar>
+                <div className="flex-none">
+                  <p>{msg.sender}</p>
+                  <p className="text-sm">{msg.timestamp}</p>
+                </div>
               </div>
+              <p>{msg.message}</p>
             </div>
-            <p>{msg.message}</p>
-          </div>
-        ))}
-      </CardContent>
-      <CardFooter className="flex space-x-2">
-        <Input placeholder="Type a message"
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          onKeyDown={handleKeyPress}
-        />
-        <Button onClick={handleSendMessage} type="submit">Send</Button>
-        {/* Integrate SavePopUp component */}
-        <SavePopUp conversationHistory={messages} />
-      </CardFooter>
-    </Card>
+          ))}
+        </CardContent>
+        <CardFooter className="flex space-x-2">
+          <Input placeholder="Type a message"
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            onKeyDown={handleKeyPress}
+          />
+          <Button onClick={handleSendMessage} type="submit">Send</Button>
+          {/* Integrate SavePopUp component */}
+          <SavePopUp conversationHistory={messages} />
+        </CardFooter>
+      </Card>
+    </div>
   );
 }
