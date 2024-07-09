@@ -24,7 +24,7 @@ export function SavePopUp({ conversationHistory }: { conversationHistory: any[] 
     setIsSaving(true);
 
     try {
-      const response = await fetch(backendEndpoint, {
+      await fetch(backendEndpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -35,10 +35,8 @@ export function SavePopUp({ conversationHistory }: { conversationHistory: any[] 
         }),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to save conversation");
-      }
       console.log("Conversation saved successfully");
+      setConversationName(''); // Reset conversation name
     } catch (error) {
       console.error("Error saving conversation:", error);
     } finally {

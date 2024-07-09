@@ -19,18 +19,18 @@ export function Chat() {
     setMessages(prevMessages => [...prevMessages, { sender, message, timestamp, avatar, fallback }]);
   };
 
-  const handleSendMessage = async () => {
-    if (!newMessage.trim()) return;
+  const handleSendMessage = async (messageContent: string) => {
+    if (!messageContent.trim()) return;
 
-    appendMessage('You', newMessage, '/public/human.png', 'YOU');
+    appendMessage('You', messageContent, '/public/human.png', 'YOU');
 
-    const userMessage = { role: 'user', content: newMessage };
+    const message = { role: 'user', content: messageContent };
 
     // Create the conversation history including the new user message
     const conversationHistory = messages.map(msg => ({
       role: msg.sender === 'You' ? 'user' : 'assistant',
       content: msg.message,
-    })).concat(userMessage);
+    })).concat(message);
 
     try {
       const response = await ollama.chat({
@@ -69,8 +69,9 @@ export function Chat() {
 
   const handleKeyPress = (event: any) => {
     if (event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault(); // Prevent the default action to avoid a new line in case of a textarea or form submission in case of single line input
-      handleSendMessage();
+      event.preventDefault();
+      handleSendMessage(newMessage);
+      setNewMessage('');
     }
   };
 
@@ -114,8 +115,7 @@ export function Chat() {
             onChange={(e) => setNewMessage(e.target.value)}
             onKeyDown={handleKeyPress}
           />
-          <Button onClick={handleSendMessage} type="submit">Send</Button>
-          {/* Integrate SavePopUp component */}
+          <Button onClick={() => handleSendMessage(newMessage)} type="submit">Send</Button>
           <SavePopUp conversationHistory={messages} />
         </CardFooter>
       </Card>

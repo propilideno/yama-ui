@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-const backendEndpoint = 'http://localhost:5000/conversations';
+const backendEndpoint = 'http://localhost:5000/history';
 
 export function ConversationList({ onConversationSelect }: { onConversationSelect: (conversation: any) => void }) {
   const [conversations, setConversations] = useState<any[]>([]);
@@ -14,7 +14,7 @@ export function ConversationList({ onConversationSelect }: { onConversationSelec
       const response = await axios.get(backendEndpoint);
       setConversations(response.data);
     } catch (error) {
-      console.error('Error fetching conversations:', error);
+      console.error('Error fetching history:', error);
     }
   };
 
