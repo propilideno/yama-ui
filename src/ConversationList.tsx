@@ -25,7 +25,7 @@ export function ConversationList({ onConversationSelect }: { onConversationSelec
   }, []);
 
   return (
-    <div>
+    <div className="mr-10">
       <div className="font-bold bg-slate-200 text-center rounded-full mb-3"> History </div>
       <div className="w-[300px] h-[665px] p-2 overflow-auto"> {/* Ensure max height and overflow */}
       {conversations.map((conversation) => (

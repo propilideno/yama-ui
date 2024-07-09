@@ -85,7 +85,7 @@ export function Chat() {
   return (
     <div className="flex">
       <ConversationList onConversationSelect={handleConversationSelect} />
-      <Card className="w-[400px] h-[700px] mx-auto grid grid-rows-[min-content_1fr_min-content]">
+      <Card className="w-[2040px] h-[700px] mx-auto grid grid-rows-[min-content_1fr_min-content]">
         <CardHeader>
           <CardTitle>Yama Chat</CardTitle>
           <CardDescription>You can interact with your LLM models here, {db_credentials} </CardDescription>
