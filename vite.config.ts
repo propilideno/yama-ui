@@ -6,8 +6,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   return {
     define: {
-      'process.env.YamaDBConnection': JSON.stringify(env.YamaDBConnection),
-      'process.env.YamaDBUrl': JSON.stringify(env.YamaDBUrl)
+      'process.env.DBConnection': JSON.stringify(env.DBConnection),
     },
     server: {
       hmr: true,

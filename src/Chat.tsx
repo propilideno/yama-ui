@@ -4,7 +4,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import ollama from 'ollama/browser';  // Ensuring correct import
+import ollama from 'ollama/browser';
+import { SavePopUp } from "@/SavePopUp";  // Import SavePopUp component
 
 const db_credentials = process.env.YamaDBConnection ?? 'NoValueProvided';
 
@@ -103,6 +104,8 @@ export function Chat() {
           onKeyDown={handleKeyPress}
         />
         <Button onClick={handleSendMessage} type="submit">Send</Button>
+        {/* Integrate SavePopUp component */}
+        <SavePopUp conversationHistory={messages} />
       </CardFooter>
     </Card>
   );
