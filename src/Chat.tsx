@@ -1,3 +1,4 @@
+// Chat.tsx
 import { useState } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -6,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import ollama from 'ollama/browser';  // Ensuring correct import
 
 const db_credentials = process.env.YamaDBConnection ?? 'NoValueProvided';
+
 export function Chat() {
   const [messages, setMessages] = useState<any[]>([]);
   const [newMessage, setNewMessage] = useState('');
@@ -20,11 +22,18 @@ export function Chat() {
 
     appendMessage('You', newMessage, '/public/human.png', 'YOU');
 
-    const message = { role: 'user', content: newMessage };
+    const userMessage = { role: 'user', content: newMessage };
+
+    // Create the conversation history including the new user message
+    const conversationHistory = messages.map(msg => ({
+      role: msg.sender === 'You' ? 'user' : 'assistant',
+      content: msg.message,
+    })).concat(userMessage);
+
     try {
       const response = await ollama.chat({
         model: 'phi3',
-        messages: [message],
+        messages: conversationHistory,
         stream: true
       });
 
@@ -35,11 +44,11 @@ export function Chat() {
           // Update the last AI message or add a new one if it's the first part
           setMessages(prevMessages => {
             const lastMessage = prevMessages[prevMessages.length - 1];
-            if (lastMessage && lastMessage.sender === 'AI') {
+            if (lastMessage && lastMessage.sender === 'assistant') {
               return prevMessages.map((msg, idx) => idx === prevMessages.length - 1 ? { ...msg, message: aiResponse } : msg);
             } else {
               return [...prevMessages, {
-                sender: 'AI', 
+                sender: 'assistant', 
                 message: aiResponse, 
                 timestamp: new Date().toLocaleTimeString(), 
                 avatar: '/public/ai.jpg', 
@@ -54,7 +63,6 @@ export function Chat() {
     }
 
     setNewMessage('');
-
   };
 
   const handleKeyPress = (event: any) => {
