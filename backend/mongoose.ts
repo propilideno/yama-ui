@@ -4,7 +4,6 @@
 // To connect with your mongoDB database
 const mongoose = require('mongoose');
 const express = require('express');
-const cors = require('cors');
 const app = express();
 
 const DB_URI = process.env.DBConnection;
@@ -14,11 +13,6 @@ mongoose.connect(DB_URI, {dbName: 'propilideno'})
 
 // Middleware
 app.use(express.json());
-
-app.use(cors({
-    origin: 'http://localhost:3000'
-}));
-
 
 // Mongoose schema and model
 const ConversationSchema = new mongoose.Schema({
