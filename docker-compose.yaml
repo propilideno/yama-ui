@@ -1,5 +1,4 @@
 version: '3.8'
-
 services:
   frontend:
     build: .
@@ -12,6 +11,11 @@ services:
     environment:
       - NODE_ENV=production
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   backend:
     build: .
@@ -24,6 +28,11 @@ services:
     environment:
       - NODE_ENV=production
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:5000 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   ollama:
     container_name: ollama
@@ -37,8 +46,13 @@ services:
       - OLLAMA_KEEP_ALIVE=24h
     networks:
       - ollama-network
-    volumes:
-      - ./.ollama/ollama:/root/.ollama
+    #deploy:
+    #  resources:
+    #    reservations:
+    #      devices:
+    #        - driver: nvidia
+    #          count: 1
+    #          capabilities: [gpu]
 
   dkr:
     container_name: ollama-model-pull
@@ -54,16 +68,9 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock"
     command: docker exec -it ollama ollama pull phi3
 
-    #deploy:
-    #  resources:
-    #    reservations:
-    #      devices:
-    #        - driver: nvidia
-    #          count: 1
-    #          capabilities: [gpu]
-
 networks:
   app-network:
     driver: bridge
+
   ollama-network:
     driver: bridge
