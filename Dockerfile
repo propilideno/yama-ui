@@ -1,3 +1,4 @@
+# Use the Bun image
 FROM oven/bun:1
 
 # Set the working directory inside the container
@@ -7,10 +8,14 @@ WORKDIR /app
 COPY . .
 
 # Install the dependencies
-ENV PORT 3000
+RUN bun install
 
-# Expose the port your app runs on
+# Set environment variable
+ENV PORT=3000
+
+# Expose the ports your app runs on
 EXPOSE 3000
+EXPOSE 5000
 
-# Command to run the app
-CMD ["bun", "run", "prod"]
+# Default command (will be overridden in docker-compose)
+CMD ["bun", "run", "frontend"]

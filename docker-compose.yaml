@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: .
+    container_name: frontend
+    command: bun run frontend
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+
+  backend:
+    build: .
+    container_name: backend
+    command: bun run backend
+    ports:
+      - "5000:5000"
+    networks:
+      - app-network
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+
+  ollama:
+    container_name: ollama
+    image: ollama/ollama:latest
+    pull_policy: always
+    tty: true
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    environment:
+      - OLLAMA_KEEP_ALIVE=24h
+    networks:
+      - ollama-network
+    #deploy:
+    #  resources:
+    #    reservations:
+    #      devices:
+    #        - driver: nvidia
+    #          count: 1
+    #          capabilities: [gpu]
+
+networks:
+  app-network:
+    driver: bridge
+  ollama-network:
+    driver: bridge
