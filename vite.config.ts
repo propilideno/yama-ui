@@ -7,6 +7,7 @@ export default defineConfig(({ mode }) => {
   return {
     define: {
       'process.env.DBConnection': JSON.stringify(env.DBConnection),
+      'process.env.DBName': JSON.stringify(env.DBName),
     },
     server: {
       hmr: true,

@@ -4,15 +4,18 @@
 // To connect with your mongoDB database
 const mongoose = require('mongoose');
 const express = require('express');
+const cors = require('cors');
 const app = express();
 
 const DB_URI = process.env.DBConnection;
 const DB_PORT = process.env.ServerPort || 5000;
+const DB_NAME = process.env.DBName ?? "YamaUI";
 
-mongoose.connect(DB_URI, {dbName: 'propilideno'})
+mongoose.connect(DB_URI, {dbName: DB_NAME })
 
 // Middleware
 app.use(express.json());
+app.use(cors())
 
 // Mongoose schema and model
 const ConversationSchema = new mongoose.Schema({
