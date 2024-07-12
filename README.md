@@ -59,13 +59,20 @@ docker compose up
     2. > $ aws-vault exec \<PROFILE\>
 - MongoDB Server
     > You can start free with [MongoDB Atlas Free Cluster](https://www.mongodb.com/lp/cloud/atlas/try4?utm_source=google&utm_campaign=search_gs_pl_evergreen_atlas_core_retarget-brand_gic-null_amers-all_ps-all_desktop_eng_lead&utm_term=mongodb%20atlas%20free&utm_medium=cpc_paid_search&utm_ad=e&utm_ad_campaign_id=14412646314&adgroup=131761122132&cq_cmp=14412646314&gad_source=1&gclid=Cj0KCQjwhb60BhClARIsABGGtw8Td5VN-RcXBIjasm-NPR_fWlqRqnDxAyhMQzQANuFbT-un3dhEW7UaAu4LEALw_wcB)
-1. Edit the .env `DBConnection` file to match with your MongoDB Server (I am using MongoDB Atlas)
+1. Open the `.env` file, edit the `DBConnection` file to match with your MongoDB Server (I am using MongoDB Atlas)
 ```bash
 # .env
 DBConnection="mongodb+srv://<USER>:<PASSWORD>@<ACCOUNT>.<SHARD>.mongodb.net"
 DBName="yamaui"
 ```
-2. With aws credentials configured, run
+2. Open the `locals.tf`, edit the `key_name` to match with your EC2 Key Pair.
+```hcl
+locals {
+  key_name = "YOUR_KEY_NAME"
+}
+```
+
+3. With aws credentials configured, run
 ```bash
 terraform init
 terraform apply

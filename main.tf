@@ -97,33 +97,6 @@ resource "aws_security_group" "instance_sg" {
     #security_groups = [] # Add here more security groups
   }
 
-  ingress {
-   description      = "Allow HTTP"
-   from_port        = 3000
-   to_port          = 3000
-   protocol         = "tcp"
-   cidr_blocks      = local.allowed_cidrs
-  }
-
-  #ingress {
-  #  description      = "Allow RDP"
-  #  from_port        = 3389
-  #  to_port          = 3389
-  #  protocol         = "tcp"
-  #  cidr_blocks     = local.allowed_cidrs
-  #  #security_groups = [] # Add here more security groups
-  #}
-
-
-
-  # ingress {
-  #   description = "Allow Subnet Internal Traffic"
-  #   from_port   = 0
-  #   to_port     = 0
-  #   protocol    = "-1"
-  #   cidr_blocks = [data.aws_subnet.default-lab.cidr_block]
-  # }
-
   egress {
     from_port   = 0
     to_port     = 0
