@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   frontend:
-    build: .
+    image: public.ecr.aws/n4x6n2i3/yamaui:latest
     container_name: frontend
     command: bun run frontend
     ports:
@@ -18,7 +18,7 @@ services:
       retries: 3
 
   backend:
-    build: .
+    image: public.ecr.aws/n4x6n2i3/yamaui:latest
     container_name: backend
     command: bun run backend
     ports:
