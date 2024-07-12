@@ -1,3 +1,10 @@
+# YamaUI - Yet another ollama user interface
+
+<div align="center">
+	<img src="./public/yamaui.png" width=500>
+    <p> Your AI bridge first choice when the issue is security and your goal is innovation </p>
+</div>
+
 # Running this project
 
 ## Local
