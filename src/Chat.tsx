@@ -8,8 +8,6 @@ import ollama from 'ollama/browser';
 import { SavePopUp } from "@/SavePopUp";  // Import SavePopUp component
 import { ConversationList } from "@/ConversationList";
 
-const db_credentials = process.env.YamaDBConnection ?? 'NoValueProvided';
-
 export function Chat() {
   const [messages, setMessages] = useState<any[]>([]);
   const [newMessage, setNewMessage] = useState('');
@@ -89,7 +87,7 @@ export function Chat() {
       <Card className="w-[2040px] h-[700px] mx-auto grid grid-rows-[min-content_1fr_min-content]">
         <CardHeader>
           <CardTitle>Yama Chat</CardTitle>
-          <CardDescription>You can interact with your LLM models here, {db_credentials} </CardDescription>
+          <CardDescription>You can interact with your LLM models here </CardDescription>
           <p>History</p>
         </CardHeader>
         <CardContent className="space-y-4 overflow-auto">

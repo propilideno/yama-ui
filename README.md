@@ -5,6 +5,15 @@
     <p> Your AI bridge first choice when the issue is security and your goal is innovation </p>
 </div>
 
+# Demonstration
+<img src="./public/example.png"/>
+
+# Architecture
+<div align="center">
+	<img src="./public/arquitecture.png" width=550>
+    <p> Private LLM Cloud Deployment </p>
+</div>
+
 # Running this project
 
 ## Local
