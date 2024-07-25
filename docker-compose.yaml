@@ -58,14 +58,6 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock"
     command: docker exec -it ollama ollama pull phi3
 
-    #deploy:
-    #  resources:
-    #    reservations:
-    #      devices:
-    #        - driver: nvidia
-    #          count: 1
-    #          capabilities: [gpu]
-
 networks:
   app-network:
     driver: bridge
