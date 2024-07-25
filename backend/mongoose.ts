@@ -15,7 +15,11 @@ mongoose.connect(DB_URI, {dbName: DB_NAME })
 
 // Middleware
 app.use(express.json());
-app.use(cors())
+
+app.use(cors({
+    origin: '*'
+}));
+
 
 // Mongoose schema and model
 const ConversationSchema = new mongoose.Schema({

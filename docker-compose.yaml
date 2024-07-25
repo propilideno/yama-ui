@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
   frontend:
     image: public.ecr.aws/n4x6n2i3/yamaui:latest
@@ -10,12 +11,9 @@ services:
       - app-network
     environment:
       - NODE_ENV=production
+    volumes:
+      - ./.env:/app/.env
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:3000 || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
 
   backend:
     image: public.ecr.aws/n4x6n2i3/yamaui:latest
@@ -27,12 +25,9 @@ services:
       - app-network
     environment:
       - NODE_ENV=production
+    volumes:
+      - ./.env:/app/.env
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:5000 || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
 
   ollama:
     container_name: ollama
@@ -46,13 +41,8 @@ services:
       - OLLAMA_KEEP_ALIVE=24h
     networks:
       - ollama-network
-    #deploy:
-    #  resources:
-    #    reservations:
-    #      devices:
-    #        - driver: nvidia
-    #          count: 1
-    #          capabilities: [gpu]
+    volumes:
+      - ./.ollama/ollama:/root/.ollama
 
   dkr:
     container_name: ollama-model-pull
@@ -68,9 +58,16 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock"
     command: docker exec -it ollama ollama pull phi3
 
+    #deploy:
+    #  resources:
+    #    reservations:
+    #      devices:
+    #        - driver: nvidia
+    #          count: 1
+    #          capabilities: [gpu]
+
 networks:
   app-network:
     driver: bridge
-
   ollama-network:
     driver: bridge

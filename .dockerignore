@@ -1,0 +1,9 @@
+.ollama
+.terraform
+.git
+.env
+docs
+LICENSE
+node_modules
+*.tf
+*.md
