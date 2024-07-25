@@ -7,3 +7,5 @@ LICENSE
 node_modules
 *.tf
 *.md
+*.yml
+*.yaml
