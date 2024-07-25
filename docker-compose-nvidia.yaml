@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  frontend:
+    image: public.ecr.aws/n4x6n2i3/yamaui:latest
+    container_name: frontend
+    command: bun run frontend
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./.env:/app/.env
+    restart: unless-stopped
+
+  backend:
+    image: public.ecr.aws/n4x6n2i3/yamaui:latest
+    container_name: backend
+    command: bun run backend
+    ports:
+      - "5000:5000"
+    networks:
+      - app-network
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./.env:/app/.env
+    restart: unless-stopped
+
+  ollama:
+    container_name: ollama
+    image: ollama/ollama:latest
+    pull_policy: always
+    tty: true
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    environment:
+      - OLLAMA_KEEP_ALIVE=24h
+    networks:
+      - ollama-network
+    volumes:
+      - ./.ollama/ollama:/root/.ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  dkr:
+    container_name: ollama-model-pull
+    depends_on:
+      ollama:
+        condition: service_started
+    image: docker
+    privileged: true
+    working_dir: "/dkr"
+    tty: true
+    volumes:
+      - ".:/dkr"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    command: docker exec -it ollama ollama pull phi3 && ollama pull llama3.1
+
+networks:
+  app-network:
+    driver: bridge
+  ollama-network:
+    driver: bridge

@@ -53,10 +53,7 @@ locals {
   runcmd:
     - |
       #!/bin/bash
-      curl -fsSL https://get.docker.com | sudo sh    # Install Docker
-      sudo apt install -y docker-compose             # Install Docker Compose
-      usermod -aG docker ubuntu                      # Add ubuntu user to docker group
-      sudo systemctl enable --now docker             # Start Docker
+      git clone https://github.com/propilideno/yama-ui.git --depth 1
   EOF
 }
 
@@ -92,6 +89,15 @@ resource "aws_security_group" "instance_sg" {
     description = "Allow SSH"
     from_port   = 22
     to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = local.allowed_cidrs
+    #security_groups = [] # Add here more security groups
+  }
+
+  ingress {
+    description = "Allow SSH"
+    from_port   = 3000
+    to_port     = 3000
     protocol    = "tcp"
     cidr_blocks = local.allowed_cidrs
     #security_groups = [] # Add here more security groups
@@ -145,10 +151,10 @@ resource "null_resource" "machine_remote_exec" {
     ]
   }
 
-  provisioner "file" {
-    source      = "../yama-ui"
-    destination = "/home/ubuntu/yama-ui"
-  }
+  #provisioner "file" {
+  #  source      = "../yama-ui"
+  #  destination = "/home/ubuntu/yama-ui"
+  #}
 
 }
 
